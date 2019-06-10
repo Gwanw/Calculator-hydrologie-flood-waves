@@ -14,6 +14,31 @@ class Graph{
         }
     }
 
+    //remove a node to the graph
+    removeNode(n){
+        this.nodeCount--;
+        
+        this.adjacencyMatrix.splice(n, 1);
+        for(var i=n; i<this.nodeCount; ++i){
+            this.adjacencyMatrix[i].splice(n, 1);
+        }
+    }
+
+    //merge 2 nodes into one
+    mergeNode(n, m){
+        //todo: run through array n and m of the matrix to find the edges between nodes
+        for(var i = 0; i<this.nodeCount; i++){
+            if(i>this.adjacencyMatrix[n].length-1){
+                n++;
+            }
+            if(i>this.adjacencyMatrix[m].length-1){
+                m++;
+            }
+        }
+
+        this.removeNode(m)
+    }
+
     //add a connection between 2 nodes
     addEdge(i, j){
         if(i<j) [i,j] = [j,i];

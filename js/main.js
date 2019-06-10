@@ -15,12 +15,12 @@ ctx.canvas.width = window.innerWidth;
 ctx.canvas.height = window.innerHeight;
 
 var nodeList = [];
-var previousPoint;
-var nodeNr;
 
 var mouseCoords = {x: 0, y: 0}
 var activeNode;
 var selectNode;
+var dragNode;
+var startTime;
 
 canvas.oncontextmenu = function(e){
     e.preventDefault();
@@ -29,30 +29,32 @@ canvas.oncontextmenu = function(e){
 document.addEventListener('mousemove', update);
 document.addEventListener('mousedown', init);
 document.addEventListener('mouseup', end);
+document.addEventListener('keydown', initKeyFuntions);
 
 function init(e){
     mouseCoords.x = e.clientX;
     mouseCoords.y = e.clientY;
+    selectNode = catchNode(mouseCoords.x, mouseCoords.y, 5);
 
     switch(e.buttons){
-        case 1:
-            addPointEvent(mouseCoords.x, mouseCoords.y);
-            break;
-        case 2:
-            if(catchNode(mouseCoords.x, mouseCoords.y, 5) !== activeNode){
-                drawElements();
+        case 1:         //left click
+            if(selectNode === undefined){
+                addPointEvent(mouseCoords.x, mouseCoords.y);
+                dragNode = nodeList.length-1;
+            }else{
+                startTime = new Date();
+                dragNode = selectNode;
             }
+            break;
+        case 2:         //right click
+            drawElements();
             activeNode = undefined;
             return;
-        case 3:
+        case 3:         //mouse wheel click
             break;
     }
 
-    setPosition();    
-    //set new point
-    //reposition exisiting point
-    //activate existing point
-    //connect to existing point
+    setPosition();
 }
 
 function update(e) {
@@ -61,33 +63,52 @@ function update(e) {
     selectNode = catchNode(mouseCoords.x, mouseCoords.y, 5);
 
     switch(e.buttons){
-        case 1:
+        case 1:         //left click
             if(selectNode !== undefined){
                 mouseCoords.x = nodeList[selectNode].x;
                 mouseCoords.y = nodeList[selectNode].y;
             }
-            setPosition();
+            nodeList[dragNode].update(mouseCoords.x, mouseCoords.y);
             break;
         default:
-            drawElements();
-            
-            drawMarkedNode(activeNode);
-            drawMarkedNode(selectNode);
-    }   
+            drawNodeMarked(selectNode);
+            break;
+    }
+    setPosition();
 }
 
-
 function end(e) {
-    if(e.which !== 1){
-        return;
+    var time = new Date()-startTime;
+
+    if(time<200){
+        if(activeNode !== undefined){
+            graph.addEdge(activeNode, selectNode);
+        }
+        activeNode = selectNode;
     }
-    previousPoint = nodeList.length;
+    if(nodeList[dragNode].x == nodeList[selectNode].x && nodeList[dragNode].y == nodeList[selectNode].y){
+        nodeList[selectNode]
+    }
+    setPosition();
+}
+
+function initKeyFuntions(e) {
+    switch(e.keyCode){
+        case 46:
+            if(activeNode !== undefined){
+                nodeList.splice([activeNode], 1);
+                graph.removeNode(activeNode);
+                activeNode = undefined;
+                drawElements();
+            }
+        default:
+            break;
+    }
 }
 
 function setPosition() {
-    nodeList[nodeList.length-1].update(mouseCoords.x, mouseCoords.y);
     drawElements();
-    drawMarkedNode(activeNode);
+    drawNodeMarked(activeNode);
   }
 
 function addPointEvent(x, y){
@@ -100,8 +121,6 @@ function addPointEvent(x, y){
             graph.addEdge(activeNode, nodeList.length - 1);
         }
         activeNode = nodeList.length - 1;
-    }else{
-        recordClickTime();
     }
 }
 
@@ -110,9 +129,10 @@ function drawElements(){
     ctx.fillStyle = "#000000";
     for(let node of nodeList) node.draw(4);
     graph.drawLines();
+    drawNodeMarked(selectNode);
 }
 
-function drawMarkedNode(node){
+function drawNodeMarked(node){
     if(node !== undefined){
         ctx.fillStyle = "#000000";
         nodeList[node].draw(6);
