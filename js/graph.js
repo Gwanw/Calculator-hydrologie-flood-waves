@@ -1,6 +1,6 @@
 class Graph{
     constructor(nodeCount){
-        this.nodeCount = nodeCount; //todo: remove
+        this.nodeCount = nodeCount;
         this.adjacencyMatrix = [];
     }
 
@@ -26,17 +26,23 @@ class Graph{
 
     //merge 2 nodes into one
     mergeNode(n, m){
-        //todo: run through array n and m of the matrix to find the edges between nodes
+        if(n == m) return;
+        let nCol = n;
+        let mCol = m;
+        let nRow, mRow;
+        nRow = mRow = 0;
+
         for(var i = 0; i<this.nodeCount; i++){
-            if(i>this.adjacencyMatrix[n].length-1){
-                n++;
+            if(this.adjacencyMatrix[mCol][mRow] === true){
+                this.adjacencyMatrix[nCol][nRow] = true;
             }
-            if(i>this.adjacencyMatrix[m].length-1){
-                m++;
-            }
+            i>nCol-1 ? nCol++:nRow++;
+            i>mCol-1 ? mCol++:mRow++;
         }
 
-        this.removeNode(m)
+        this.adjacencyMatrix[n][n] = false;
+
+        this.removeNode(m);
     }
 
     //add a connection between 2 nodes

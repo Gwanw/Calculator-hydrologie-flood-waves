@@ -38,6 +38,7 @@ function init(e){
 
     switch(e.buttons){
         case 1:         //left click
+            //if theres 
             if(selectNode === undefined){
                 addPointEvent(mouseCoords.x, mouseCoords.y);
                 dragNode = nodeList.length-1;
@@ -86,9 +87,10 @@ function end(e) {
         }
         activeNode = selectNode;
     }
-    if(nodeList[dragNode].x == nodeList[selectNode].x && nodeList[dragNode].y == nodeList[selectNode].y){
-        nodeList[selectNode]
-    }
+    if(dragNode != selectNode){
+        graph.mergeNode(selectNode, dragNode);
+        nodeList.splice([dragNode], 1);
+    }   
     setPosition();
 }
 
