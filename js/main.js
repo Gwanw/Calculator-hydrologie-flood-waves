@@ -38,7 +38,6 @@ function init(e){
 
     switch(e.buttons){
         case 1:         //left click
-            //if theres 
             if(selectNode === undefined){
                 addPointEvent(mouseCoords.x, mouseCoords.y);
                 dragNode = nodeList.length-1;
@@ -87,10 +86,16 @@ function end(e) {
         }
         activeNode = selectNode;
     }
-    if(dragNode != selectNode){
-        graph.mergeNode(selectNode, dragNode);
-        nodeList.splice([dragNode], 1);
-    }   
+    for(i=0; i<nodeList.length; i++){
+        if(dragNode != i && nodeList[dragNode].x == nodeList[i].x && nodeList[dragNode].y == nodeList[i].y){
+            graph.mergeNode(i, dragNode);
+            nodeList.splice([dragNode], 1);
+            if(activeNode == i || activeNode == dragNode){
+                activeNode = i;
+            }
+            return;
+        }
+    }
     setPosition();
 }
 
