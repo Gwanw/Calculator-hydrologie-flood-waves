@@ -1,12 +1,15 @@
 class Graph {
     constructor(nodeCount) {
-        this.nodeCount = nodeCount;
+        this.nodeList = [];
+        this.nodeCount = 0;
         this.adjacencyMatrix = [];
     }
 
     //add a node to the graph
-    addNode() {
+    addNode(x, y) {
         this.nodeCount++;
+        this.nodeList.push(new Node(x, y));
+        console.log(this.nodeList);
 
         this.adjacencyMatrix.push(new Array(this.nodeCount));
         for (var i = 0; i < this.nodeCount; ++i) {
@@ -17,6 +20,7 @@ class Graph {
     //remove a node to the graph
     removeNode(n) {
         this.nodeCount--;
+        this.nodeList.splice([n], 1);
 
         this.adjacencyMatrix.splice(n, 1);
         for (var i = n; i < this.nodeCount; ++i) {
@@ -45,34 +49,54 @@ class Graph {
         this.removeNode(m);
     }
 
+    //update position of node
+    updateNode(n, x, y) {
+        this.nodeList[n].update(x, y);
+    }
+
     //add a connection between 2 nodes
     addEdge(i, j) {
-        if (i < j) [i, j] = [j, i];
+        if (i < j)[i, j] = [j, i];
         this.adjacencyMatrix[i][j] = true;
     }
 
     //remove a connection
     removeEdge(i, j) {
-        if (i < j) [i, j] = [j, i];
+        if (i < j)[i, j] = [j, i];
         this.adjacencyMatrix[i][j] = false;
     }
 
     //draw the graph
-    drawLines() {
+    drawLines(color) {
         for (var i = 0; i < this.adjacencyMatrix.length; i++) {
             for (var j = 0; j <= i; j++) {
                 if (this.adjacencyMatrix[i][j] === false) continue;
-                ctx.beginPath();
-
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = '#000000';
-
-                ctx.moveTo(nodeList[i].x, nodeList[i].y);
-                ctx.lineTo(nodeList[j].x, nodeList[j].y);
-
-                ctx.stroke();
+                this.drawLine(i, j, color);
             }
         }
     }
 
+    //draw specific line of graph between 2 nodes
+    drawLine(n, m, color) {
+        if (color === undefined) { color = "#000000" };
+        ctx.beginPath();
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = color;
+
+        ctx.moveTo(this.nodeList[n].x, this.nodeList[n].y);
+        ctx.lineTo(this.nodeList[m].x, this.nodeList[m].y);
+
+        ctx.stroke();
+    }
+
+    //draw all nodes
+    drawNodes(size, color) {
+        for (let node of this.nodeList) node.draw(size, color);
+    }
+
+    //draw specific node
+    drawNode(n, size, color) {
+        this.nodeList[n].draw(size, color);
+    }
 }
