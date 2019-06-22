@@ -1,5 +1,5 @@
-class InputManagerMap{
-    constructor(){
+class InputManagerMap {
+    constructor() {
         this.nodeList = []
     }
 
