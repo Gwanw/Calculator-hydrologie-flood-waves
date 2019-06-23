@@ -37,7 +37,7 @@ class Graph {
         nRow = mRow = 0;
 
         for (var i = 0; i < this.nodeCount; i++) {
-            if (this.adjacencyMatrix[mCol][mRow] === true) {
+            if (this.adjacencyMatrix[mCol][mRow]) {
                 this.adjacencyMatrix[nCol][nRow] = true;
             }
             i > nCol - 1 ? nCol++ : nRow++;
@@ -64,6 +64,26 @@ class Graph {
     removeEdge(i, j) {
         if (i < j)[i, j] = [j, i];
         this.adjacencyMatrix[i][j] = false;
+    }
+
+    //find line intersection
+    findIntersection() {
+        for (var i = 0; i < this.adjacencyMatrix.length; i++) {
+            for (var j = 0; j <= i; j++) {
+                if (adjacencyMatrix[i][j]) {
+
+                }
+            }
+        }
+    }
+
+    //find cycle in graph
+    findCycle() {
+        for (var i = 0; i < this.adjacencyMatrix.length; i++) {
+            for (var j = 0; j <= i; j++) {
+
+            }
+        }
     }
 
     //draw the graph
@@ -97,6 +117,7 @@ class Graph {
 
     //draw specific node
     drawNode(n, size, color) {
+        console.log(n)
         this.nodeList[n].draw(size, color);
     }
 }

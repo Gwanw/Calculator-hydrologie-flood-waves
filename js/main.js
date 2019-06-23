@@ -51,6 +51,7 @@ function init(e) {
         case 3: //mouse wheel click
             break;
     }
+
     updateCanvas();
 }
 
@@ -59,6 +60,7 @@ function moveMouse(e) {
 
     switch (e.buttons) {
         case 1: //left click
+            //catch node for merging
             if (selectNode !== undefined) {
                 mouseCoords.x = graph.nodeList[selectNode].x;
                 mouseCoords.y = graph.nodeList[selectNode].y;
@@ -68,28 +70,32 @@ function moveMouse(e) {
         default:
             break;
     }
+
     updateCanvas();
 }
 
 function end(e) {
     let time = new Date() - startTime;
 
+    //if click duration is <200ms click with new active node
     if (time < 200) {
         if (activeNode !== undefined) {
             graph.addEdge(activeNode, selectNode);
         }
         activeNode = selectNode;
     }
+
+    //check if drag node has same coords as other node and merges them
     for (i = 0; i < graph.nodeList.length; i++) {
         if (dragNode != i && graph.nodeList[dragNode].x == graph.nodeList[i].x && graph.nodeList[dragNode].y == graph.nodeList[i].y) {
             graph.mergeNode(i, dragNode);
-            graph.nodeList.splice([dragNode], 1);
-            if (activeNode == i || activeNode == dragNode) {
+            if (activeNode == i || activeNode == dragNode) { //todo: delete first statement
                 activeNode = i;
             }
             return;
         }
     }
+
     updateCanvas();
 }
 
@@ -97,20 +103,16 @@ function initKeyFuntions(e) {
     switch (e.keyCode) {
         case 46: //delete Element
             if (activeNode !== undefined) {
-                removeNodeCanvas(activeNode);
+                graph.removeNode(activeNode);
                 activeNode = undefined;
             }
         default:
             break;
     }
+    updateCanvas();
 }
 
 function updateCanvas() {
-    drawElements();
-}
-
-function removeNodeCanvas(node) {
-    graph.removeNode(node);
     drawElements();
 }
 
@@ -130,6 +132,7 @@ function drawElements() {
 
     graph.drawNodes();
     graph.drawLines();
+    //for(node in [selectNode, activeNode]) drawMarkedNode(node);
     drawMarkedNode(selectNode);
     drawMarkedNode(activeNode);
 }
@@ -144,5 +147,5 @@ function drawMarkedNode(node) {
 function trackMouseCanvas(e) {
     mouseCoords.x = e.clientX;
     mouseCoords.y = e.clientY;
-    selectNode = catchNode(mouseCoords.x, mouseCoords.y, 5, graph.nodeList);
+    selectNode = catchElement(mouseCoords.x, mouseCoords.y, 5, graph.nodeList);
 }
