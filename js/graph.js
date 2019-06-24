@@ -78,10 +78,11 @@ class Graph {
     }
 
     //find cycle in graph
-    findCycle() {
+    findCycle() { //idea: find all nodes that cant be part of a cycle (no/one/partly two edges)
+        //find all arrays of nodes and check if there are some intersections
         for (var i = 0; i < this.adjacencyMatrix.length; i++) {
-            for (var j = 0; j <= i; j++) {
-
+            for (var j = 0; j < this.adjacencyMatrix.length; j++) {
+                j > nCol - 1 ? nCol++ : nRow++;
             }
         }
     }
