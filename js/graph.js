@@ -3,6 +3,7 @@ class Graph {
         this.nodeList = [];
         this.nodeCount = 0;
         this.adjacencyMatrix = [];
+        this.calculationCheck = false;
     }
 
     //add a node to the graph
@@ -50,9 +51,7 @@ class Graph {
     }
 
     //update position of node
-    updateNode(n, x, y) {
-        this.nodeList[n].update(x, y);
-    }
+    updateNode = (n, x, y) => { this.nodeList[n].update(x, y) }
 
     //add a connection between 2 nodes
     addEdge(i, j) {
@@ -78,13 +77,21 @@ class Graph {
     }
 
     //find cycle in graph
-    findCycle() { //idea: find all nodes that cant be part of a cycle (no/one/partly two edges)
-        //find all arrays of nodes and check if there are some intersections
+    findCycle() {
+        //new and more efficient idea: every node must have 2 connections for the area graph, so one or more cycles are guaranteed
         for (var i = 0; i < this.adjacencyMatrix.length; i++) {
+            let nodeCount = 0;
             for (var j = 0; j < this.adjacencyMatrix.length; j++) {
                 j > nCol - 1 ? nCol++ : nRow++;
+                nodeCount += this.adjacencyMatrix[nCol][nRow]
+                    //todo: add array with nodes of cycles, replace nodeCount with Array length
             }
+
+            if (nodeCount !== 2) return;
         }
+
+        //area calculable
+        this.calculationCheck = true;
     }
 
     //draw the graph
@@ -112,12 +119,10 @@ class Graph {
     }
 
     //draw all nodes
-    drawNodes(size, color) {
-        for (let node of this.nodeList) node.draw(size, color);
-    }
+    drawNodes = (size, color) => { for (let node of this.nodeList) node.draw(size, color) }
 
     //draw specific node
-    drawNode(n, size, color) {
+    drawNode = (n, size, color) => {
         console.log(n)
         this.nodeList[n].draw(size, color);
     }

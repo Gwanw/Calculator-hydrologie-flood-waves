@@ -114,6 +114,10 @@ function initKeyFuntions(e) {
 
 function updateCanvas() {
     drawElements();
+    //todo:
+    //calculate area for graphArea
+    //calculate river length for graphRiver
+    graph.findCycle();
 }
 
 function addPointCanvas() {
