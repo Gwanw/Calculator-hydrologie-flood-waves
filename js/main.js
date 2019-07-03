@@ -1,6 +1,6 @@
 var container = document.getElementsByClassName("container");
 var canvas = document.createElement("canvas");
-var graph = new Graph();
+var graph = new GraphArea();
 
 //document.body.style.backgroundImage = "url(Map.jpg)";
 

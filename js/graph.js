@@ -1,9 +1,8 @@
 class Graph {
-    constructor(nodeCount) {
+    constructor() {
         this.nodeList = [];
         this.nodeCount = 0;
         this.adjacencyMatrix = [];
-        this.calculationCheck = false;
     }
 
     //add a node to the graph
@@ -74,24 +73,6 @@ class Graph {
                 }
             }
         }
-    }
-
-    //find cycle in graph
-    findCycle() {
-        //new and more efficient idea: every node must have 2 connections for the area graph, so one or more cycles are guaranteed
-        for (var i = 0; i < this.adjacencyMatrix.length; i++) {
-            let nodeCount = 0;
-            for (var j = 0; j < this.adjacencyMatrix.length; j++) {
-                j > nCol - 1 ? nCol++ : nRow++;
-                nodeCount += this.adjacencyMatrix[nCol][nRow]
-                    //todo: add array with nodes of cycles, replace nodeCount with Array length
-            }
-
-            if (nodeCount !== 2) return;
-        }
-
-        //area calculable
-        this.calculationCheck = true;
     }
 
     //draw the graph

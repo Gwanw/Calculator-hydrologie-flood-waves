@@ -1,4 +1,4 @@
-class graphRiver extends graph {
+class GraphRiver extends Graph {
     constructor() {}
 
     lenRiverTotal() {
