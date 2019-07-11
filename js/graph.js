@@ -9,7 +9,6 @@ class Graph {
     addNode(x, y) {
         this.nodeCount++;
         this.nodeList.push(new Node(x, y));
-        console.log(this.nodeList);
 
         this.adjacencyMatrix.push(new Array(this.nodeCount));
         for (var i = 0; i < this.nodeCount; ++i) {
@@ -104,7 +103,6 @@ class Graph {
 
     //draw specific node
     drawNode = (n, size, color) => {
-        console.log(n)
         this.nodeList[n].draw(size, color);
     }
 }

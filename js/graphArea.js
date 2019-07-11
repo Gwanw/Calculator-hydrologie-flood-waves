@@ -1,27 +1,28 @@
 class GraphArea extends Graph {
     constructor() {
         super();
-        this.calculationCheck = false;
+        this.calculationCheck;
         this.nodesOfCycle = [];
     }
 
     //find cycle in graph
     findCycle() {
+        this.calculationCheck = false;
         if(!this.adjacencyMatrix.length) return;
 
-        let nRow = 0;
-        let nCol = 0;
         //new and more efficient idea: every node must have 2 connections for the area graph, so one or more cycles are guaranteed
         for (var i = 0; i < this.adjacencyMatrix.length; i++) {
             let nodeCount = 0;
+            let nRow = 0 + i;
+            let nCol = 0;
             for (var j = 0; j < this.adjacencyMatrix.length; j++) {
-                nodeCount += this.adjacencyMatrix[nCol][nRow + i];
+                nodeCount += this.adjacencyMatrix[nRow][nCol];
 
-                j > nCol - 1 ? nCol++ : nRow++;
+                j > nRow - 1 ? nRow++ : nCol++;
                     //todo: add array with nodes of cycles, replace nodeCount with Array length
             }
 
-            if (nodeCount !== 2) return;
+            if (nodeCount !== 2)return;
         }
 
         //area calculable
@@ -33,7 +34,8 @@ class GraphArea extends Graph {
 
         //check if area is calculable
         if (!this.calculationCheck) return;
-        this.createArrayOfCycle(0);
+        console.log(this.calculationCheck);
+        //this.createArrayOfCycle(0);
 
 
     }

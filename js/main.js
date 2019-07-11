@@ -52,12 +52,14 @@ function init(e) {
             break;
     }
 
-    updateCanvas();
+    updateCanvas(true);
 }
 
 function moveMouse(e) {
     trackMouseCanvas(e);
 
+    //check if theres a change for the area/length
+    var changeCheck = false;
     switch (e.buttons) {
         case 1: //left click
             //catch node for merging
@@ -66,12 +68,13 @@ function moveMouse(e) {
                 mouseCoords.y = graph.nodeList[selectNode].y;
             }
             graph.updateNode(dragNode, mouseCoords.x, mouseCoords.y);
+            changeCheck = true;
             break;
         default:
             break;
     }
 
-    updateCanvas();
+    updateCanvas(changeCheck);
 }
 
 function end(e) {
@@ -96,7 +99,7 @@ function end(e) {
         }
     }
 
-    updateCanvas();
+    updateCanvas(true);
 }
 
 function initKeyFuntions(e) {
@@ -109,15 +112,19 @@ function initKeyFuntions(e) {
         default:
             break;
     }
-    updateCanvas();
+    updateCanvas(true);
 }
 
-function updateCanvas() {
+function updateCanvas(changeCheck) {
     drawElements();
     //todo:
-    //calculate area for graphArea
     //calculate river length for graphRiver
-    graph.findCycle();
+
+    //only calculate sum if theres a change in the graph
+    if(changeCheck){
+        graph.findCycle();
+        graph.sumArea();
+    }
 }
 
 function addPointCanvas() {
