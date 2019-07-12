@@ -30,17 +30,17 @@ class Graph {
     //merge 2 nodes into one
     mergeNode(n, m) {
         if (n == m) return;
-        let nCol = n;
-        let mCol = m;
-        let nRow, mRow;
-        nRow = mRow = 0;
+        let nRow = n;
+        let mRow = m;
+        let nCol, mCol;
+        nCol = mCol = 0;
 
         for (var i = 0; i < this.nodeCount; i++) {
-            if (this.adjacencyMatrix[mCol][mRow]) {
-                this.adjacencyMatrix[nCol][nRow] = true;
+            if (this.adjacencyMatrix[mRow][mCol]) {
+                this.adjacencyMatrix[nRow][nCol] = true;
             }
-            i > nCol - 1 ? nCol++ : nRow++;
-            i > mCol - 1 ? mCol++ : mRow++;
+            i > nRow - 1 ? nRow++ : nCol++;
+            i > mRow - 1 ? mRow++ : mCol++;
         }
 
         this.adjacencyMatrix[n][n] = false;
